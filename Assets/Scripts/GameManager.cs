@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     public Button resumeButton;
     public Button pauseButton;
 
+    public Transform Lives;
+
     private Animator playerAnim;
     private int playerHealth;
     //private int tempHealth;
@@ -74,28 +76,28 @@ public class GameManager : MonoBehaviour
 
     public void ReduceHealth()
     {
-        if (health3.gameObject.activeInHierarchy && healthProgress && !immunity)
+        if (Lives.GetChild(2).gameObject.activeInHierarchy && healthProgress && !immunity)
         {
-            health3.gameObject.SetActive(false); // Hide life
+            Lives.GetChild(2).gameObject.SetActive(false); // Hide life
             healthProgress = false; // Turn healthProgress to false
             immunity = true;
             TurnHealthProgressPositive(); // Invoke method to turn back to true;
         }
-        else if (health2.gameObject.activeInHierarchy && healthProgress && !immunity)
+        else if (Lives.GetChild(1).gameObject.activeInHierarchy && healthProgress && !immunity)
         {
-            health2.gameObject.SetActive(false);
+            Lives.GetChild(1).gameObject.SetActive(false);
             healthProgress = false;
             immunity = true;
             TurnHealthProgressPositive(); // Invoke method to turn back to true;
         }
-        else if (health1.gameObject.activeInHierarchy && healthProgress && !immunity)
+        else if (Lives.GetChild(0).gameObject.activeInHierarchy && healthProgress && !immunity)
         {
-            health1.gameObject.SetActive(false);
+            Lives.GetChild(0).gameObject.SetActive(false);
             healthProgress = false;
             immunity = true;
             TurnHealthProgressPositive(); // Invoke method to turn back to true;
         }
-        else if (!health1.gameObject.activeInHierarchy && healthProgress && !immunity)
+        else if (!Lives.GetChild(0).gameObject.activeInHierarchy && healthProgress && !immunity)
         {
             Die();
         }
@@ -113,7 +115,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Coroutine started");
         yield return new WaitForSeconds(1);
-        ;
+
         healthProgress = true;
         immunity = false;
     }
