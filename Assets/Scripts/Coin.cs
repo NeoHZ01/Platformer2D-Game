@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    public CircleCollider2D circleCollider2d;
+    private CircleCollider2D circleCollider2d;
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        circleCollider2d = gameObject.GetComponent<CircleCollider2D>();
     }
 
     void OnCollisionEnter2D(Collision2D coll)

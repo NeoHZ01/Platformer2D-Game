@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public GameObject player;
+    public GameObject weapon;
     
     public Text playerHealthText;
     public Text coinCollectedText;
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
     public Transform Lives;
 
     private Animator playerAnim;
+    private Animator swordAnim;
     private int playerHealth;
     //private int tempHealth;
     private int coinCollected;
@@ -50,6 +52,9 @@ public class GameManager : MonoBehaviour
     {
         
         OnSceneLoaded(); // Call the method to start immediately when the game runs
+
+        playerAnim = player.GetComponent<Animator>(); // Get the animator component from player
+        swordAnim = weapon.GetComponent<Animator>();
 
         resumeButton.gameObject.SetActive(false); // Hide the resume button in game scene
         pauseMessage.gameObject.SetActive(false); // HJide pause message in game scene
@@ -107,6 +112,8 @@ public class GameManager : MonoBehaviour
     {
         if (!healthProgress)
         {
+            playerAnim.SetBool("Damaged", true);
+            swordAnim.SetBool("Damaged", true);
             StartCoroutine("DelayHealthProgress");
         }
     }
@@ -116,6 +123,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("Coroutine started");
         yield return new WaitForSeconds(1);
 
+        playerAnim.SetBool("Damaged", false);
+        swordAnim.SetBool("Damaged", false);
         healthProgress = true;
         immunity = false;
     }

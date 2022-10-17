@@ -91,34 +91,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    /*void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Fighter"  && collision.gameObject.name == "Enemy" && !isCollidingEnemy)
-        {
-            Damaged();
-            immuneTime += 1;
-        }
-        if (immuneTime > 5)
-        {
-            StartCoroutine("BlockDamageSpam");
-        }
-        else
-        {
-            isCollidingEnemy = false;
-        }
-    } */
-
-    //IEnumerator BlockDamageSpam() // Coroutine to prevent player getting spammed with enemy collider
-    //{
-    //    isCollidingEnemy = true; // Will run if isCollidingEnemy is true
-    //    yield return new WaitForSeconds(damageDelay); // Wait for seconds based on damageDelay (1 second)
-
-    //    yield return null;
-    //    isCollidingEnemy = false; // Turn isCollidingEnemy back to false
-    //    damageDelay = 0; // Reset damagedelay to 0
-    //    playerAnim.SetBool("Damaged", false); // Turn off damage animation when coroutine ends
-    //}
-
     IEnumerator BlockJumpSpam() // Coroutine to prevent jump spams
     {
         isJump = true; // Will run if isJump is true

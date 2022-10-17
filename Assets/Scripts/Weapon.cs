@@ -13,32 +13,6 @@ public class Weapon : Collidable // Inherit from Collidable
         swordAnim = GetComponent<Animator>();
     }
 
-    //protected override void OnCollide(Collider2D collide)
-    //{
-    //    if (collide.tag == "Fighter")
-    //    {
-    //        if (collide.name == "Enemy")
-    //        {
-    //            Debug.Log("Enemy Hit!");
-    //        }
-
-    //        return;
-            
-    //    }
-    //}
-
-    //void OnCollisionEnter2D(Collision2D collision)
-    //{
-    
-    //    //var force = position - collision.transform.position;
-    //    if (collision.gameObject.tag == "Minion")
-    //    {
-    //        Debug.Log("Hit");
-    //        Debug.Log(collision.gameObject);
-    //    }
-    //}
-
-
     // Update is called once per frame
     protected override void Update()
     {
