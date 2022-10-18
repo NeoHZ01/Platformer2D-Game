@@ -16,7 +16,7 @@ public class Weapon : Collidable // Inherit from Collidable
     // Update is called once per frame
     protected override void Update()
     {
-        base.Start(); // To inoke the update function in the Collidable script - To ensure the weapon has collision function
+        base.Start(); // To invoke the update function in the Collidable script - ensure the weapon has collision function
         if (Input.GetMouseButtonDown(0))
         {
             Swing();

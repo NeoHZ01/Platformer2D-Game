@@ -16,19 +16,13 @@ public class PlayerMovement : MonoBehaviour
     private float jumpDelay = 1f;
     private bool isJump;
     private int timer;
-
-    //private float damageDelay = 1f;
-    //private bool isCollidingEnemy;
     private int immuneTime;
-
-    //private Animator playerAnim;
 
     void Start()
     {
         playerAnim = GetComponent<Animator>(); // Get animator
-        Idle();
+        Idle(); // Invoke idle method
 
-        //isCollidingEnemy = false;
         isJump = false; // Set private bool (isJump) to false
 
         if (jumpDelay <= 0) // If jumpdelay is less than or equal to 0
@@ -101,14 +95,14 @@ public class PlayerMovement : MonoBehaviour
         timer = 0; // Reset timer to 0
     }
 
-    
-
+    // Run method - Set running animation active and disable idle animation
     private void Run()
     {
         playerAnim.SetBool("Running", true);
         playerAnim.SetBool("Idle", false);
     }
 
+    // Idle method - Set idle animation active and disable run animation
     private void Idle()
     {
         playerAnim.SetBool("Idle", true);

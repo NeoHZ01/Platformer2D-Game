@@ -86,7 +86,6 @@ MonoBehaviour:
     maxNormalAngle: 0
   boxcollider2d: {fileID: 8917438800152625531}
   player: {fileID: 0}
-  pushbackForce: 1
 --- !u!1 &8917438801774709569
 GameObject:
   m_ObjectHideFlags: 0

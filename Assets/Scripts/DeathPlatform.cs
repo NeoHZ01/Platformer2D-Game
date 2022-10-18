@@ -12,6 +12,7 @@ public class DeathPlatform : MonoBehaviour
         boxcollider2D = gameObject.GetComponent<BoxCollider2D>();
     }
 
+    // When collided with player game object, lose message will be active from game manager
     void OnCollisionEnter2D(Collision2D coll)
     {
         if (coll.gameObject.name == "Player")
