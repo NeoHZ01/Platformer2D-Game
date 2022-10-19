@@ -16,8 +16,8 @@ public class EnemyBehavior : Collidable // Inherit from Collidable
         if (collide.tag == "Fighter" && collide.name == "Player")
         {
             // If true, get rb of player and player vector3 position
-            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-            Vector3 position = player.transform.position;
+            Rigidbody2D rb = collide.gameObject.GetComponent<Rigidbody2D>();
+            Vector3 position = collide.gameObject.transform.position;
 
             // Direction of force will be the collided object transform position and the enemy transform position
             Vector2 direction = collide.transform.position - transform.position;

@@ -17,8 +17,8 @@ public class DeathPlatform : MonoBehaviour
     {
         if (coll.gameObject.name == "Player")
         {
-            Destroy(coll.gameObject);
             GameManager.instance.loseMessage.gameObject.SetActive(true);
+            GameManager.instance.tryAgainButton.gameObject.SetActive(true);
         }
     }
 

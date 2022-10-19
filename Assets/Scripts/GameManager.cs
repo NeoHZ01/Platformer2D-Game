@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -10,15 +11,18 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
     public GameObject weapon;
+    public GameObject HUD;
+    public GameObject cmcam1;
+    public GameObject eventSystem;
 
     public Text gameGoal;
-
-    public Text playerHealthText;
     public Text coinCollectedText;
     public Text enemyKilledText;
 
     public Button resumeButton;
     public Button pauseButton;
+    public Button tryAgainButton;
+    public Button nextLevelButton;
 
     public Transform Lives;
 
@@ -30,9 +34,11 @@ public class GameManager : MonoBehaviour
     private bool immunity;
     private bool healthProgress;
 
+    private GameObject cmcam;
+
     // Hide unnecessary variables from public view
     [HideInInspector] public Text pauseMessage;
-    [HideInInspector] public Text winMessage;
+     public Text winMessage;
     [HideInInspector] public Text loseMessage;
     [HideInInspector] public Image health1;
     [HideInInspector] public Image health2;
@@ -42,9 +48,22 @@ public class GameManager : MonoBehaviour
     // Wake the instance of the game manager
     void Awake()
     {
-        if (instance == null)
+        // Check if instance is not null - when scene is restarted/reloaded etc, instance will not be empty (game manager is already assigned to it)
+        if (GameManager.instance != null)
         {
-            instance = this;
+            // Destroy these objects
+            Destroy(gameObject);
+            Destroy(player.gameObject);
+            Destroy(cmcam1);
+            Destroy(HUD);
+            Destroy(eventSystem);
+            Destroy(Camera.main.gameObject);
+        }
+        else // When game is first started, instance is empty
+        {
+            instance = this; // Set current game manager to instance
+            //SceneManager.sceneLoaded += LoadState; // Adding additional tasks to sceneloaded which contains a list of delegations
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
     }
 
@@ -52,13 +71,13 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-        OnSceneLoaded(); // Call the method to start immediately when the game runs
 
         playerAnim = player.GetComponent<Animator>(); // Get the animator component from player
         swordAnim = weapon.GetComponent<Animator>(); // Get the animator component from weapon
 
         resumeButton.gameObject.SetActive(false); // Hide the resume button in game scene
+        tryAgainButton.gameObject.SetActive(false); // Hide the try again button in game scene - only appears when player lose the game
+        nextLevelButton.gameObject.SetActive(false); // Hide next level button in game scene - only appears after player win the game
         pauseMessage.gameObject.SetActive(false); // Hide pause message in game scene
         loseMessage.gameObject.SetActive(false); // Hide lose message in game scene until invoked
         winMessage.gameObject.SetActive(false); // Hide win message in game scene until invoked
@@ -69,8 +88,6 @@ public class GameManager : MonoBehaviour
         coinCollected = 0;
         enemyKilled = 0;
     }
-
-
 
     // Update is called once per frame
     void Update()
@@ -152,8 +169,18 @@ public class GameManager : MonoBehaviour
     // When player click restart
     public void Restart()
     {
-        // Main scenme will reload
-        SceneManager.LoadScene("Main");
+        Debug.Log("Restart");
+
+        //Destroy(cmcam); // Destroy 
+
+        coinCollected = 0;
+        enemyKilled = 0;
+
+        loseMessage.gameObject.SetActive(false);
+        tryAgainButton.gameObject.SetActive(false);
+
+        // Main scene will reload
+        SceneManager.LoadScene("Level1");
     }
 
     // Pause the game when pause button is pressed
@@ -174,16 +201,63 @@ public class GameManager : MonoBehaviour
         pauseMessage.gameObject.SetActive(false); // Hide pause message
     }
 
+    // Load Scene 2
+    public void NextLevel()
+    {
+        winMessage.gameObject.SetActive(false);
+        nextLevelButton.gameObject.SetActive(false);
+
+        Debug.Log(winMessage);
+
+        SceneManager.LoadScene("Level2");
+
+
+        //winMessage.gameObject.SetActive(false);
+        //nextLevelButton.gameObject.SetActive(false);
+
+        //player.transform.position = GameObject.Find("Spawn").transform.position;
+    }
+
     // Use to spawn character at a specific location
-    public void OnSceneLoaded()
+    public void OnSceneLoaded(Scene s, LoadSceneMode mode)
+    {
+        Time.timeScale = 1;
+        cmcam = GameObject.Find("CM vcam1");
+        cmcam.GetComponent<CinemachineVirtualCamera>().Follow = player.transform;
+
+        HUD = GameObject.Find("HUD");
+
+        gameGoal.gameObject.SetActive(true);
+        StartCoroutine("HideGameGoal");
+
+        winMessage.gameObject.SetActive(false);
+        nextLevelButton.gameObject.SetActive(false);
+
+        // Player will find the game object position and assign the position to the player position
+        player.transform.position = GameObject.Find("Spawn").transform.position;
+    }
+
+    // Use to spawn character at a specific location
+    /*public void OnSceneLoaded()
     {
         Time.timeScale = 1;
         gameGoal.gameObject.SetActive(true);
         StartCoroutine("HideGameGoal");
 
+
+        //winMessage.gameObject.SetActive(false);
+        //nextLevelButton.gameObject.SetActive(false);
+
         // Player will find the game object position and assign the position to the player position
         player.transform.position = GameObject.Find("Spawn").transform.position;
-    }
+    } */
+
+    //public void LoadState(Scene s, LoadSceneMode mode) // Sceneloaded comes with two parameter (scene and loadscenemode)
+    //{
+    //    // Sceneloaded is a list of delegations
+    //    // In this case, I am adding additional tasks to the list of delegations
+    //    SceneManager.sceneLoaded += LoadState; // Sceneloaded is an array of functions
+    //}
 
     // Coroutine to hide game goal message after the game is started
     IEnumerator HideGameGoal()
@@ -198,8 +272,8 @@ public class GameManager : MonoBehaviour
     {
         if (!health1.gameObject.activeInHierarchy)
         {
-            Destroy(player.gameObject);
             loseMessage.gameObject.SetActive(true);
+            tryAgainButton.gameObject.SetActive(true);
         }
     }
 
@@ -207,6 +281,6 @@ public class GameManager : MonoBehaviour
     public void Congratulation()
     {
         winMessage.gameObject.SetActive(true);
-        Time.timeScale = 0;
+        nextLevelButton.gameObject.SetActive(true);
     }
 }
