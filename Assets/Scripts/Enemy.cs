@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private BoxCollider2D boxCollider2D;
+
     public ContactFilter2D filter; // To filter what the object should collide with
+
+    private BoxCollider2D boxCollider2D;
 
     private Collider2D[] hitqueue = new Collider2D[5]; // An array to store the collided objects
 
@@ -18,6 +20,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         boxCollider2D.OverlapCollider(filter, hitqueue); // Store the objects collided (fliter) in the array (hitqueue)
 
         for (int i = 0; i < hitqueue.Length; i++) // Loop through the hitqueue array

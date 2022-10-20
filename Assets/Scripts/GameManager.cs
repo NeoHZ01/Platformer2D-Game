@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
 
     private Animator playerAnim;
     private Animator swordAnim;
-    private int playerHealth;
     private int coinCollected;
     private int enemyKilled;
     private bool immunity;
@@ -38,7 +37,7 @@ public class GameManager : MonoBehaviour
 
     // Hide unnecessary variables from public view
     [HideInInspector] public Text pauseMessage;
-     public Text winMessage;
+    public Text winMessage;
     [HideInInspector] public Text loseMessage;
     [HideInInspector] public Image health1;
     [HideInInspector] public Image health2;
@@ -66,7 +65,6 @@ public class GameManager : MonoBehaviour
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
     }
-
 
     // Start is called before the first frame update
     void Start()
@@ -145,7 +143,6 @@ public class GameManager : MonoBehaviour
     // Coroutine for the immune system
     IEnumerator DelayHealthProgress()
     {
-        Debug.Log("Coroutine started");
         yield return new WaitForSeconds(1);
 
         playerAnim.SetBool("Damaged", false);
@@ -171,11 +168,16 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Restart");
 
-        //Destroy(cmcam); // Destroy 
-
+        // Reset coins and kill counts
         coinCollected = 0;
         enemyKilled = 0;
 
+        // Reset all the lives back
+        Lives.GetChild(2).gameObject.SetActive(true);
+        Lives.GetChild(1).gameObject.SetActive(true);
+        Lives.GetChild(0).gameObject.SetActive(true);
+
+        // Hide the lose message and button
         loseMessage.gameObject.SetActive(false);
         tryAgainButton.gameObject.SetActive(false);
 
@@ -206,8 +208,6 @@ public class GameManager : MonoBehaviour
     {
         winMessage.gameObject.SetActive(false);
         nextLevelButton.gameObject.SetActive(false);
-
-        Debug.Log(winMessage);
 
         SceneManager.LoadScene("Level2");
 
@@ -280,7 +280,17 @@ public class GameManager : MonoBehaviour
     // Congratuilation method to be invoked when player wins
     public void Congratulation()
     {
-        winMessage.gameObject.SetActive(true);
-        nextLevelButton.gameObject.SetActive(true);
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.name == "Level1")
+        {
+            winMessage.gameObject.SetActive(true);
+            nextLevelButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            winMessage.gameObject.SetActive(true);
+
+        }
+        
     }
 }
