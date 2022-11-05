@@ -1,5 +1,6 @@
 # Platformer2D-Game
  A 2D platformer game I created
+ All scripts are commented with explanation
 
 # Assets
 Player & enemy assets - https://0x72.itch.io/dungeontileset-ii
